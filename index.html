@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Информатика – Компьютермен танысу</title>
+<style>
+:root{--bg:#f4f9ff;--card:#fff;--tx:#1d2b45;--ac:#3b82f6;--ok:#22c55e;--no:#ef4444;--sh:#dbe7f7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a2b;--card:#1d2940;--tx:#eaf1ff;--sh:#2c3d5c}}
+:root[data-theme="dark"]{--bg:#121a2b;--card:#1d2940;--tx:#eaf1ff;--sh:#2c3d5c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Trebuchet MS",Verdana,sans-serif;font-size:18px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px;background:var(--card);position:sticky;top:env(safe-area-inset-top,0px);z-index:5;box-shadow:0 2px 8px var(--sh)}
+nav button{flex:0 0 auto;border:0;border-radius:20px;padding:10px 14px;background:var(--sh);color:var(--tx);font:inherit;font-size:15px;cursor:pointer}
+nav button.on{background:var(--ac);color:#fff}
+main{max-width:760px;margin:0 auto;padding:16px}
+.page{display:none}.page.show{display:block}
+h1,h2{margin:.3em 0}
+.card{background:var(--card);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 10px var(--sh)}
+.big{font-size:64px;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.btn{border:0;border-radius:14px;padding:12px 16px;font:inherit;background:var(--ac);color:#fff;cursor:pointer;margin:4px}
+.part{background:var(--sh);border-radius:16px;padding:12px;text-align:center;cursor:pointer;border:3px solid transparent;font-size:16px}
+.part span{font-size:46px;display:block}
+.part:hover{border-color:var(--ac)}
+.ok{background:var(--ok)!important;color:#fff}.no{background:var(--no)!important;color:#fff}
+.stage{display:flex;align-items:center;justify-content:space-around;font-size:48px;min-height:130px;text-align:center}
+.stage small{display:block;font-size:14px}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.stage div{animation:pop .6s}
+#target{position:relative;height:220px;background:var(--sh);border-radius:16px;overflow:hidden}
+#bug{position:absolute;font-size:40px;cursor:pointer;user-select:none}
+textarea{width:100%;height:120px;font:15px monospace;border-radius:12px;border:2px solid var(--ac);padding:8px;background:var(--card);color:var(--tx)}
+#prev{background:#fff;color:#111;border-radius:12px;padding:10px;min-height:80px;margin-top:8px}
+code{background:var(--sh);padding:2px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+<main>
+
+<section class="page show" id="p0">
+<div class="big">🖥️🎮</div>
+<h1>Сәлем, жас информатик!</h1>
+<div class="card">Бүгін біз <b>компьютермен танысамыз</b>, ойын ойнаймыз және <b>HTML</b> дегенді үйренеміз. Жоғарыдағы батырмалар арқылы беттерді ауыстыр.</div>
+<div class="card"><b>Жоспар:</b><br>1️⃣ Компьютер бөліктері<br>2️⃣ Сәйкестендіру ойыны<br>3️⃣ Дұрыс па, бұрыс па? + тінтуір ойыны<br>4️⃣ HTML – сайт тілі</div>
+<div class="card">💡 <b>Қызықты дерек:</b> «компьютер» сөзі «есептеуіш» дегенді білдіреді. Алғашқы компьютер бөлмедей үлкен болған!</div>
+<button class="btn" onclick="go(1)">Бастаймыз ▶</button>
+</section>
+
+<section class="page" id="p1">
+<h2>🔍 Компьютер бөліктері</h2>
+<p>Бөлікті бас – ол туралы біл!</p>
+<div class="grid" id="parts"></div>
+<div class="card" id="info">👆 Кез келген бөлікті таңда.</div>
+<div class="card">
+<b>🎬 Мини-бейне: компьютер қалай жұмыс істейді?</b>
+<div class="stage" id="stage"></div>
+<button class="btn" onclick="play()">▶ Қосу</button>
+</div>
+</section>
+
+<section class="page" id="p2">
+<h2>🧩 1-ойын: Сәйкестендір</h2>
+<p>Алдымен суретті, сосын оның атын бас.</p>
+<div class="card"><div class="grid" id="pics"></div><div class="grid" id="names"></div>
+<p id="sc1">Ұпай: 0 / 5</p></div>
+</section>
+
+<section class="page" id="p3">
+<h2>✅❌ 2-ойын: Дұрыс па?</h2>
+<div class="card"><p id="q" style="font-size:22px"></p>
+<button class="btn" style="background:var(--ok)" onclick="ans(true)">Дұрыс ✔</button>
+<button class="btn" style="background:var(--no)" onclick="ans(false)">Бұрыс ✘</button>
+<p id="res"></p></div>
+<h2>🖱️ 3-ойын: Тінтуірмен ұста!</h2>
+<div class="card"><p>Қоңызды 10 рет бас. <b id="cnt">0</b> / 10</p><div id="target"><div id="bug">🐞</div></div></div>
+</section>
+
+<section class="page" id="p4">
+<h2>🌐 HTML дегеніміз не?</h2>
+<div class="card">HTML – сайттар жазылатын тіл. Ол <b>тегтер</b> арқылы жұмыс істейді. Тег – бұл <code>&lt;h1&gt;</code> сияқты белгі. Ашылады және жабылады: <code>&lt;h1&gt;Сәлем&lt;/h1&gt;</code></div>
+<div class="card"><b>✍️ Өзің жаз!</b> Мәтінді өзгертіп көр:
+<textarea id="code" oninput="run()">&lt;h1&gt;Менің атым Айым&lt;/h1&gt;
+&lt;p&gt;Мен компьютерді жақсы көремін! 💻&lt;/p&gt;</textarea>
+<div id="prev"></div>
+<p>Үлгілер: <code>&lt;h1&gt;</code> – тақырып, <code>&lt;p&gt;</code> – абзац, <code>&lt;b&gt;</code> – қалың мәтін, <code>&lt;i&gt;</code> – көлбеу.</p></div>
+<div class="card" id="final">🏆 Барлық ойындарды ойнап шық – жұлдыздарыңды жина!</div>
+</section>
+
+</main>
+<script>
+var titles=["🏠 Басты","🔍 Бөліктер","🧩 Ойын 1","✅ Ойын 2","🌐 HTML"];
+var nav=document.getElementById("nav");
+titles.forEach(function(t,i){var b=document.createElement("button");b.textContent=t;b.onclick=function(){go(i)};nav.appendChild(b)});
+function go(n){document.querySelectorAll(".page").forEach(function(p,i){p.classList.toggle("show",i==n)});
+[].forEach.call(nav.children,function(b,i){b.classList.toggle("on",i==n)});window.scrollTo(0,0)}
+go(0);
+var stars={a:0,b:0,c:0};
+function fin(){document.getElementById("final").innerHTML="🏆 Жұлдыздарың: "+"⭐".repeat(stars.a+stars.b+stars.c)+" ("+(stars.a+stars.b+stars.c)+")"}
+var P=[["🖥️","Монитор","Экран. Компьютер бізге суретті осы арқылы көрсетеді."],["⌨️","Пернетақта","Әріп пен санды осымен жазамыз."],["🖱️","Тінтуір","Экрандағы меңзерді жылжытады, басуға болады."],["🧠","Процессор","Компьютердің «миы». Барлық есепті ол шығарады."],["🔊","Динамик","Дыбыс пен музыка шығарады."]];
+var parts=document.getElementById("parts");
+P.forEach(function(p){var d=document.createElement("div");d.className="part";d.innerHTML="<span>"+p[0]+"</span>"+p[1];d.onclick=function(){document.getElementById("info").innerHTML="<b>"+p[0]+" "+p[1]+"</b> – "+p[2]};parts.appendChild(d)});
+function play(){var s=document.getElementById("stage");var steps=[["⌨️<small>1. Енгіземіз</small>"],["🧠<small>2. Ойланады</small>"],["🖥️<small>3. Көрсетеді</small>"]];s.innerHTML="";steps.forEach(function(x,i){setTimeout(function(){var d=document.createElement("div");d.innerHTML=x[0];s.appendChild(d);if(i<2){var a=document.createElement("div");a.textContent="➡️";s.appendChild(a)}},i*1200)})}
+var sel=null,got=0;
+var pics=document.getElementById("pics"),names=document.getElementById("names");
+P.forEach(function(p,i){var b=document.createElement("button");b.className="part";b.innerHTML="<span>"+p[0]+"</span>";b.onclick=function(){if(!b.dataset.d){sel=i;[].forEach.call(pics.children,function(x){x.style.borderColor=""});b.style.borderColor="var(--ac)"}};pics.appendChild(b)});
+P.slice().sort(function(){return Math.random()-.5}).forEach(function(p){var b=document.createElement("button");b.className="btn";b.textContent=p[1];b.onclick=function(){if(sel===null||b.dataset.d)return;var idx=P.findIndex(function(x){return x[1]==p[1]});if(idx==sel){b.classList.add("ok");pics.children[sel].classList.add("ok");pics.children[sel].dataset.d=1;b.dataset.d=1;got++;stars.a=got;document.getElementById("sc1").textContent="Ұпай: "+got+" / 5"+(got==5?" 🎉 Жарайсың!":"");sel=null;fin()}else{b.classList.add("no");setTimeout(function(){b.classList.remove("no")},600)}};names.appendChild(b)});
+var Q=[["Монитор – компьютердің «миы».",false],["Пернетақтамен мәтін жазамыз.",true],["Тінтуір дыбыс шығарады.",false],["Процессор есептерді шығарады.",true],["HTML – сайт жазатын тіл.",true]];
+var qi=0,qs=0;
+function showQ(){document.getElementById("q").textContent=qi<Q.length?(qi+1)+". "+Q[qi][0]:"Аяқталды! Нәтиже: "+qs+" / "+Q.length+" 🎉"}
+function ans(v){if(qi>=Q.length)return;var r=document.getElementById("res");if(v===Q[qi][1]){qs++;stars.b=qs;r.textContent="🟢 Дұрыс!";r.style.color="var(--ok)"}else{r.textContent="🔴 Қате. Қайта ойлан!";r.style.color="var(--no)"}qi++;showQ();fin()}
+showQ();
+var c=0,bug=document.getElementById("bug"),tg=document.getElementById("target");
+function mv(){bug.style.left=Math.random()*(tg.clientWidth-50)+"px";bug.style.top=Math.random()*(tg.clientHeight-50)+"px"}
+bug.onclick=function(){c++;document.getElementById("cnt").textContent=c;if(c>=10){stars.c=3;fin();c=0;alert("Жарайсың! 🎉")}mv()};
+setTimeout(mv,300);
+function run(){document.getElementById("prev").innerHTML=document.getElementById("code").value}
+var t=document.getElementById("code");t.value=t.value.replace(/&lt;/g,"<").replace(/&gt;/g,">");run();
+</script>
+</body>
+</html>
